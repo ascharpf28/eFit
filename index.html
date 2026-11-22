@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>E-Fit – See yourself in any look</title>
+<meta name="description" content="Turn a photo into your 3D self and explore clothes on your own avatar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f6f5f1;
+    --ink: #1e1e1c;
+    --muted: #6d6c67;
+    --panel: #e7e6e1;
+    --line: #d6d5cf;
+    --pad: clamp(18px, 5vw, 49px);
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "Inter", system-ui, sans-serif; line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 var(--pad); }
+  .label { font-size: 11px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); margin: 0; }
+
+  /* Buttons */
+  .btn {
+    display: inline-block; padding: 14px 22px; font-size: 12px; font-weight: 500;
+    letter-spacing: .03em; text-transform: uppercase; background: var(--ink); color: var(--bg);
+    border: 0; cursor: pointer; font-family: inherit;
+  }
+  .btn:hover { background: #000; }
+  .btn.light { background: var(--bg); color: var(--ink); }
+  .btn.light:hover { background: #fff; }
+  .link { font-size: 12px; font-weight: 500; letter-spacing: .03em; text-transform: uppercase; }
+  .link:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+  /* Header */
+  header .wrap { display: flex; align-items: center; justify-content: space-between; padding-top: 15px; padding-bottom: 15px; }
+  .logo { font-weight: 600; font-size: 22px; letter-spacing: -.01em; }
+  .nav { display: flex; align-items: center; gap: 56px; }
+  .menu-btn { display: none; background: none; border: 0; font: inherit; font-size: 12px; font-weight: 500; text-transform: uppercase; cursor: pointer; color: var(--ink); }
+
+  /* Hero */
+  .hero { display: grid; grid-template-columns: 5fr 7fr; gap: 40px; align-items: start; padding-top: 52px; padding-bottom: 20px; }
+  .hero-copy { padding-top: 40px; }
+  .brand-title { font-size: clamp(26px, 3vw, 34px); font-weight: 600; letter-spacing: -.02em; line-height: 1.1; margin: 0 0 20px; }
+  h1 { font-size: clamp(40px, 5vw, 52px); line-height: 1.1; font-weight: 500; letter-spacing: -.02em; margin: 24px 0 72px; }
+  .hero-copy p.sub { color: var(--muted); margin: 0 0 56px; max-width: 34ch; }
+  .actions { display: flex; align-items: center; gap: 36px; flex-wrap: wrap; }
+
+  /* Visual panel */
+  .panel { background: var(--panel); padding: 20px; }
+  .tryon { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 36px; }
+  figure { margin: 0; }
+  figcaption { margin-top: 12px; font-size: 11px; font-weight: 500; letter-spacing: .03em; text-transform: uppercase; }
+  .ph {
+    aspect-ratio: 3 / 7; width: 100%; display: grid; place-items: center;
+    color: var(--muted); font-size: 12px; text-align: center;
+  }
+  .ph img { width: 100%; height: 100%; object-fit: contain; }
+  .tryon figure.main { display: none; } /* mobile-only hero figure */
+
+  hr { border: 0; border-top: 1px solid var(--line); margin: 0; }
+  .rule { margin: 0 var(--pad); max-width: 1102px; }
+
+  /* How it works */
+  .how { padding-top: 40px; padding-bottom: 56px; }
+  h2 { font-size: clamp(28px, 3.6vw, 32px); font-weight: 400; letter-spacing: -.01em; line-height: 1.2; margin: 24px 0 56px; }
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .steps li { border-top: 1px solid var(--line); padding-top: 14px; }
+  .steps .n { font-size: 11px; color: var(--muted); display: block; margin-bottom: 20px; }
+  .steps h3 { font-size: 18px; font-weight: 500; margin: 0 0 8px; }
+  .steps p { margin: 0; font-size: 13px; color: var(--muted); }
+
+  /* Review */
+  .review .wrap { display: grid; grid-template-columns: 176px 1fr; gap: 24px; padding-top: 32px; padding-bottom: 56px; }
+  .review blockquote { margin: 0; font-size: clamp(20px, 2.4vw, 22px); line-height: 1.35; max-width: 34ch; }
+
+  /* CTA band */
+  .cta { background: var(--ink); color: var(--bg); }
+  .cta .wrap { display: flex; align-items: center; justify-content: space-between; gap: 32px; padding-top: 48px; padding-bottom: 48px; }
+  .cta h2 { color: var(--bg); margin: 0 0 8px; font-size: clamp(28px, 4vw, 34px); }
+  .cta p { margin: 0; font-size: 13px; color: #a9a8a2; }
+
+  footer .wrap { display: flex; justify-content: space-between; padding-top: 20px; padding-bottom: 20px; font-size: 11px; }
+  footer .logo { font-size: 12px; }
+
+  /* Mobile */
+  @media (max-width: 800px) {
+    .menu-btn { display: block; }
+    .nav { display: none; position: absolute; right: var(--pad); top: 52px; flex-direction: column; align-items: flex-start; gap: 14px; background: var(--bg); border: 1px solid var(--line); padding: 16px 20px; z-index: 5; }
+    .nav.open { display: flex; }
+    header { position: relative; border-bottom: 1px solid var(--line); }
+    .nav .btn { padding: 10px 16px; }
+    .hero { grid-template-columns: 1fr; gap: 0; padding: 0; }
+    .hero-copy { padding: 32px var(--pad) 36px; }
+    h1 { margin: 20px 0 24px; }
+    .hero-copy p.sub { margin-bottom: 36px; max-width: none; }
+    .hero-copy .btn { display: block; text-align: left; padding: 18px 16px; }
+    .actions .link { display: none; }
+    .panel { padding: var(--pad); }
+    .tryon { grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+    .tryon figure.main { display: block; grid-column: 1 / -1; max-width: 300px; margin: 0 auto; }
+    .tryon figure.main .ph { aspect-ratio: 3 / 5.5; }
+    .tryon figure.skip-mobile { display: none; }
+    .tryon .ph { aspect-ratio: 3 / 5; }
+    .rule { display: none; }
+    .how { padding-top: 40px; }
+    .steps { grid-template-columns: 1fr; gap: 0; }
+    .steps li { display: grid; grid-template-columns: 46px 1fr; padding: 16px 0; border-top: 1px solid var(--line); }
+    .steps .n { margin: 0; align-self: center; }
+    .steps h3 { font-weight: 400; font-size: 16px; margin: 0; }
+    .steps p { display: none; }
+    .review .wrap { grid-template-columns: 1fr; gap: 20px; border-top: 1px solid var(--line); margin-top: 0; }
+    .cta .wrap { flex-direction: column; align-items: stretch; }
+    .cta .btn { text-align: left; padding: 18px 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a href="#top" class="logo">E-Fit</a>
+    <button class="menu-btn" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="#how-it-works" class="link">How it works</a>
+      <a href="#early-access" class="btn">Get early access</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <!-- Hero -->
+  <section class="wrap hero">
+    <div class="hero-copy">
+      <p class="brand-title">E-Fit</p>
+      <p class="label">A better way to explore style</p>
+      <h1>See yourself<br>in any look.</h1>
+      <p class="sub">Turn a photo into your 3D self.<br>Explore clothes on your own avatar.</p>
+      <div class="actions">
+        <a href="#early-access" class="btn">Get early access</a>
+        <a href="#how-it-works" class="link">See how it works</a>
+      </div>
+    </div>
+
+    <div class="panel">
+      <p class="label">From photo to personal style</p>
+      <div class="tryon">
+        <!-- Mobile shows the "try new looks" figure large first -->
+        <figure class="main">
+          <div class="ph" role="img" aria-label="Avatar wearing a new look"><img src="./images/final.png" alt=""></div>
+          <figcaption>Your style, on your avatar</figcaption>
+        </figure>
+        <figure>
+          <div class="ph" role="img" aria-label="Original photo"><img src="./images/original.png" alt=""></div>
+          <figcaption>Your photo</figcaption>
+        </figure>
+        <figure>
+          <div class="ph" role="img" aria-label="3D model"><img src="./images/avatar.png" alt=""></div>
+          <figcaption>Your 3D model</figcaption>
+        </figure>
+        <figure class="skip-mobile">
+          <div class="ph" role="img" aria-label="Avatar wearing a new look"><img src="./images/final.png" alt=""></div>
+          <figcaption>Try new looks</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- How it works -->
+  <section class="wrap how" id="how-it-works">
+    <p class="label">How it works</p>
+    <h2>One photo. New possibilities.</h2>
+    <ol class="steps">
+      <li>
+        <span class="n">01</span>
+        <div><h3>Upload your photo</h3><p>Start with a photo of yourself.</p></div>
+      </li>
+      <li>
+        <span class="n">02</span>
+        <div><h3>Create your 3D self</h3><p>View your model from different angles.</p></div>
+      </li>
+      <li>
+        <span class="n">03</span>
+        <div><h3>Try different looks</h3><p>Explore clothes on your own avatar.</p></div>
+      </li>
+    </ol>
+  </section>
+
+  <hr class="rule">
+
+  <!-- Review -->
+  <section class="review">
+    <div class="wrap">
+      <p class="label">Sample customer review</p>
+      <blockquote>“Seeing outfits on my own avatar makes putting a look together so much easier.”</blockquote>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta" id="early-access">
+    <div class="wrap">
+      <div>
+        <h2>Style starts with you.</h2>
+        <p>See what your next look could be.</p>
+      </div>
+      <a href="#" class="btn light">Get early access</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="logo">E-Fit</span>
+    <a href="#early-access" class="label">Early access</a>
+  </div>
+</footer>
+
+<script>
+  // Mobile menu toggle
+  const btn = document.querySelector('.menu-btn');
+  const nav = document.getElementById('nav');
+  btn.addEventListener('click', () => {
+    const open = nav.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open);
+  });
+  nav.addEventListener('click', e => { if (e.target.closest('a')) { nav.classList.remove('open'); btn.setAttribute('aria-expanded', false); } });
+</script>
+</body>
+</html>
